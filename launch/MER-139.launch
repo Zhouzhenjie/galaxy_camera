@@ -5,11 +5,11 @@
     <arg name="enable_imu_trigger" default="false"/>
     <arg name="camera_name" default="galaxy_camera"/>
 
-    <node pkg="nodelet" type="nodelet" name="standalone_nodelet" args="manager"
+    <node pkg="nodelet" type="nodelet" name="vision_nodelet" args="manager"
           output="screen"/>
 
     <node pkg="nodelet" type="nodelet" name="galaxy_camera"
-          args="load galaxy_camera/GalaxyCameraNodelet standalone_nodelet"
+          args="load galaxy_camera/GalaxyCameraNodelet vision_nodelet"
           output="screen">
         <param name="image_width" value="1200"/>
         <param name="image_height" value="900"/>
@@ -22,7 +22,7 @@
     </node>
 
     <node pkg="nodelet" type="nodelet" name="debayer"
-          args="load image_proc/debayer standalone_nodelet"
+          args="load image_proc/debayer vision_nodelet"
           output="screen">
         <remap from="image_raw" to="$(arg camera_name)/image_raw"/>
         <remap from="image_mono" to="$(arg camera_name)/image_mono"/>
@@ -30,7 +30,7 @@
     </node>
 
     <node pkg="nodelet" type="nodelet" name="rectify"
-          args="load image_proc/rectify standalone_nodelet"
+          args="load image_proc/rectify vision_nodelet"
           output="screen">
         <remap from="image_mono" to="$(arg camera_name)/image_mono"/>
         <remap from="camera_info" to="$(arg camera_name)/camera_info"/>

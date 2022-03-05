@@ -1,0 +1,16 @@
+<launch>
+    <arg name="filter_type" default="complementary"/>
+    <arg name="enable_imu_trigger" default="false"/>
+
+    <include file="$(find galaxy_camera)/launch/MER-139.launch">
+        <arg name="enable_imu_trigger" value="$(arg enable_imu_trigger)"/>
+    </include>
+
+    <include file="$(find rm_hw)/launch/rm_hw.launch"/>
+
+    <rosparam file="$(find imu_filter_controllers)/config/$(arg filter_type)_controller.yaml" command="load"/>
+    <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false"
+          output="screen" args="
+        controllers/imu_filter_controller
+  "/>
+</launch>

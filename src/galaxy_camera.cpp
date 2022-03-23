@@ -197,7 +197,7 @@ void GalaxyCameraNodelet::onFrameCB(GX_FRAME_CALLBACK_PARAM* pFrame)
     }
     DxRaw8toRGB24((void*)pFrame->pImgBuf, img_, pFrame->nWidth, pFrame->nHeight, RAW2RGB_NEIGHBOUR, BAYERBG, false);
     memcpy((char*)(&image_.data[0]), img_, image_.step * image_.height);
-    if(count_ % 10 == 0)
+    if (count_ % 10 == 0)
       pub_.publish(image_, info_);
     count_++;
   }

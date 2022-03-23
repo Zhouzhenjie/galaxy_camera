@@ -197,8 +197,9 @@ void GalaxyCameraNodelet::onFrameCB(GX_FRAME_CALLBACK_PARAM* pFrame)
     }
     DxRaw8toRGB24((void*)pFrame->pImgBuf, img_, pFrame->nWidth, pFrame->nHeight, RAW2RGB_NEIGHBOUR, BAYERBG, false);
     memcpy((char*)(&image_.data[0]), img_, image_.step * image_.height);
-    pub_.publish(image_, info_);
-    //    ROS_INFO("%f", delay_time);
+    if(count_ % 10 == 0)
+      pub_.publish(image_, info_);
+    count_++;
   }
 }
 
@@ -291,6 +292,7 @@ sensor_msgs::Image GalaxyCameraNodelet::image_;
 image_transport::CameraPublisher GalaxyCameraNodelet::pub_;
 sensor_msgs::CameraInfo GalaxyCameraNodelet::info_;
 bool GalaxyCameraNodelet::enable_imu_trigger_;
+int GalaxyCameraNodelet::count_ = 0;
 struct TriggerPacket GalaxyCameraNodelet::fifo_[FIFO_SIZE];
 uint32_t GalaxyCameraNodelet::receive_trigger_counter_ = 0;
 int GalaxyCameraNodelet::fifo_front_ = 0;
